@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<!-- Bring in Bootstrap Functionality -->
+{%  extends 'base.html' %}
+
+
+
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Post Details</title>
+</head>
+
+
+<body>
+{% block content %}
+    {% load static %}
+    <br/>
+    <div style="text-align: center;"><img src ="../media/{{ post.heroHeader}}" alt = "heroHeader" class = "rounded"
+    style="max-width:100%;width: auto; height: 500px"></div>
+    <div class = "form-control rounded border-success p-1 mb-2" style="margin: 25px; max-width: 96%;margin-left: 2%">
+<h1>{{ post.title }}</h1>
+<h2>By: {{ post.author}}</h2>
+    <small>Posted: {{ post.created_at }} </small><small style="float:right; margin-right: 5px;">Viewed: {{ post.viewCount }}</small>
+<hr>
+<p>{{ post.body }}</p>
+
+    </div>
+
+    <div class="form-control rounded border-success p-1 mb-2 " style="margin: 25px; max-width: 96%;margin-left: 2%">
+        <strong>Add Comment</strong>
+    <hr style="margin-top:0px;">
+    <div class = "form-group">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div style ="display: inline-flex; align-items: center;">
+            <div style ="margin: 5px;">
+                {{ field.label_tag }}
+            </div>
+            <div style ="margin: 5px; ">
+            {{ field }}
+            </div>
+            </div>
+        {% endfor %}
+    <div style=" float: bottom; margin-bottom: 5px; margin-left: 93%;">
+        <button class= "btn btn-success" onClick="this.form.submit();this.disabled=true; this.value='Sending…';">Comment</button>
+    </div>
+    </form>
+    </div>
+    </div>
+
+
+
+    <div class="form-control rounded border-success p-1 mb-2" style="margin: 25px; max-width: 96%;margin-left: 2%">
+
+    {% if not post.comments.all %}
+    No Comments yet...
+    {% else %}
+        <strong>Comments:</strong>
+        <hr style="margin-top:0em;">
+        {% for comment in post.comments.all %}
+            <div style="display: inline-block; margin-left: 20px; margin-top:-10px;">
+            <strong>{{ comment.name }} - {{ comment.created_at }}</strong></br>
+            {{ comment.comment }}
+            </div>
+
+            <div style=" float: right;display: inline-flex; ">
+
+
+             {% with sum=comment.upVote|add:comment.downVote  %}
+                <strong style="margin: 10px;">Likes: {{ sum }}</strong>
+            {% endwith %}
+
+            <form action = "{% url 'upvote' post.pk %}" method="POST">
+                {% csrf_token %}
+                <button class = "btn btn-success" style="display:flex; margin: 5px;" type="submit" value="{{ comment.id }}" name="upvoteID">upvote</button>
+            </form>
+
+            <form action = "{% url 'downvote' post.pk %}" method="POST">
+                {% csrf_token %}
+                <button class = "btn btn-success" style="display:flex; margin: 5px;" type="submit" value="{{ comment.id }}" name="downvoteID">downvote</button>
+            </form>
+
+
+            </div>
+            <hr>
+
+        {% endfor %}
+    {% endif %}
+    </div>
+    </br>
+    </br>
+
+
+    <!--Return to Bootstrap Implementation -->
+{% endblock %}
+
+
+
+</body>
+</html>

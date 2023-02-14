@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{%  extends 'base.html' %}
+{% block title %} New Post{% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+{% block content %}
+<h1>Add Post</h1>
+    <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button onClick="this.form.submit();this.disabled=true; this.value='Sending…';">post</button>
+
+    </form>
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{%  extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chautauqua Blog Homepage</title>
+<style>
+
+    </style>
+
+<body>
+
+
+
+{% block content %}
+
+
+
+
+<div style="text-align: center; margin: 5px;">
+    <div class="border rounded border-success p-1 mb-2" style=" display: inline-block; width: 20%; background-color: rgba(25,135,84)">
+<h1 style="color:white;">Articles:</h1>
+    <hr style="margin: 0em;">
+    {% if 'sort' in request.GET %}
+        <div style="text-align: center;"><small id = "sortHeader" style="color: white;">Earliest</small></div>
+        {% else %}
+        <div style="text-align: center;"><small id = "sortHeader" style="color: white;">Most Recent</small></div>
+{% endif %}
+    </div>
+</div>
+
+<div style="margin-top: -5px;  margin-right: 5px">
+    {% if 'sort' in request.GET %}
+         <a href = "{% url 'homepage' %}" style="display: inline-block; float: right"> <button class = "btn btn-success">Flip order</button> </a>
+        {% else %}
+    <a href = "{% url 'homepage' %}?sort=1" style="display: inline-block; float: right"> <button class = "btn btn-success">Flip order</button> </a>
+   {% endif %}
+    </div>
+    </div>
+    </br>
+    <hr>
+
+
+
+
+    {% if 'sort' in request.GET %}
+    {% for post in object_list reversed%}
+    {% if post.pubStatus %}
+         <div class="border rounded border-success p-1 mb-2" id="outer" style="margin: 25px;">
+
+        <div style="display:inline-block; vertical-align: -4px; margin-left: 2px;" ><img src ="../media/{{ post.heroHeader}}" id = "inner"alt = "heroHeader" class = "rounded"
+         style="max-width: 140px; width: auto; height: 50px; float:left"></div>
+<div style="display: inline-block;">
+    {{post.title}} - {{post.author}}- Posted: {{ post.created_at }}
+    <br/>
+    <span style="display: block; width: 1000px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{post.body}}</span>
+</div>
+    <div  id= "inner" style=" float: right; margin-top: 8px; margin-right: 5px;">
+        <a href="{% url 'detailed_post' post.pk%}" style= "vertical-align: middle"><button class = "btn btn-success">Read Article</button></a>
+    </div>
+    </div>
+{% endif  %}
+{% endfor%}
+        {% else %}
+
+        {% for post in object_list %}
+            {% if post.pubStatus %}
+    <div class="border rounded border-success p-1 mb-2" id="outer" style="margin: 25px;">
+
+    <div style="display:inline-block; vertical-align: -4px; margin-left: 2px;" ><img src ="../media/{{ post.heroHeader}}" id = "inner"alt = "heroHeader" class = "rounded"
+    style="max-width: 140px; width: auto; height: 50px; float:left"></div>
+<div style="display: inline-block;">
+    {{post.title}} - {{post.author}} - Posted: {{ post.created_at }}
+    <br/>
+    <span style="display: block; width: 1000px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{post.body}}</span>
+</div>
+    <div  id= "inner" style=" float: right; margin-top: 8px; margin-right: 5px;">
+        <a href="{% url 'detailed_post' post.pk%}" style= "vertical-align: middle"><button class = "btn btn-success">Read Article</button></a>
+    </div>
+    </div>
+            {% endif %}
+        {% endfor %}
+{% endif %}
+
+{% endblock %}
+</body>
+</html>
