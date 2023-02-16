@@ -4,23 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Chautauqua Blog Homepage</title>
-<style>
-
-    </style>
-
+</head>
 <body>
 
-
-
+<!-- including bootstrap necessities and standard navigation header-->
 {% block content %}
 
 
 
-
+<!-- Simple Header Labeling the Articles and how they are sorted  -->
 <div style="text-align: center; margin: 5px;">
     <div class="border rounded border-success p-1 mb-2" style=" display: inline-block; width: 20%; background-color: rgba(25,135,84)">
 <h1 style="color:white;">Articles:</h1>
     <hr style="margin: 0em;">
+    <!-- Depending on the existence of the "sort" url parameter print corresponding description -->
     {% if 'sort' in request.GET %}
         <div style="text-align: center;"><small id = "sortHeader" style="color: white;">Earliest</small></div>
         {% else %}
@@ -29,6 +26,10 @@
     </div>
 </div>
 
+
+
+
+<!-- Setup for the button to flip the ordering of the post on the homepage-->
 <div style="margin-top: -5px;  margin-right: 5px">
     {% if 'sort' in request.GET %}
          <a href = "{% url 'homepage' %}" style="display: inline-block; float: right"> <button class = "btn btn-success">Flip order</button> </a>
@@ -42,45 +43,60 @@
 
 
 
-
+<!-- Printing of all posts and buttons to their detail pages -->
+    <!-- This section can be improved by handling the possibility of no Posts existing -->
+    <!-- If sort url parameter exists, flip for loop-->
     {% if 'sort' in request.GET %}
+        <!-- flipped for loop to iterate through post and print in standard format -->
     {% for post in object_list reversed%}
     {% if post.pubStatus %}
          <div class="border rounded border-success p-1 mb-2" id="outer" style="margin: 25px;">
 
         <div style="display:inline-block; vertical-align: -4px; margin-left: 2px;" ><img src ="../media/{{ post.heroHeader}}" id = "inner"alt = "heroHeader" class = "rounded"
          style="max-width: 140px; width: auto; height: 50px; float:left"></div>
-<div style="display: inline-block;">
-    {{post.title}} - {{post.author}}- Posted: {{ post.created_at }}
-    <br/>
-    <span style="display: block; width: 1000px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{post.body}}</span>
-</div>
-    <div  id= "inner" style=" float: right; margin-top: 8px; margin-right: 5px;">
-        <a href="{% url 'detailed_post' post.pk%}" style= "vertical-align: middle"><button class = "btn btn-success">Read Article</button></a>
-    </div>
+        <div style="display: inline-block;">
+            {{post.title}} - {{post.author}}- Posted: {{ post.created_at }}
+            <br/>
+            <span style="display: block; width: 1000px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{post.body}}</span>
+        </div>
+        <div  id= "inner" style=" float: right; margin-top: 8px; margin-right: 5px;">
+            <!-- Button to visit detailed post page -->
+            <a href="{% url 'detailed_post' post.pk%}" style= "vertical-align: middle"><button class = "btn btn-success">Read Article</button></a>
+        </div>
+         </div>
     </div>
 {% endif  %}
 {% endfor%}
-        {% else %}
 
+
+<!-- if sort url parameter does not exist, don't flip for loop-->
+        {% else %}
+<!-- for loop to iterate through post and print in standard format -->
         {% for post in object_list %}
             {% if post.pubStatus %}
-    <div class="border rounded border-success p-1 mb-2" id="outer" style="margin: 25px;">
+            <div class="border rounded border-success p-1 mb-2" id="outer" style="margin: 25px;">
 
-    <div style="display:inline-block; vertical-align: -4px; margin-left: 2px;" ><img src ="../media/{{ post.heroHeader}}" id = "inner"alt = "heroHeader" class = "rounded"
-    style="max-width: 140px; width: auto; height: 50px; float:left"></div>
-<div style="display: inline-block;">
-    {{post.title}} - {{post.author}} - Posted: {{ post.created_at }}
-    <br/>
-    <span style="display: block; width: 1000px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{post.body}}</span>
-</div>
-    <div  id= "inner" style=" float: right; margin-top: 8px; margin-right: 5px;">
-        <a href="{% url 'detailed_post' post.pk%}" style= "vertical-align: middle"><button class = "btn btn-success">Read Article</button></a>
-    </div>
-    </div>
+            <div style="display:inline-block; vertical-align: -4px; margin-left: 2px;" >
+                <img src ="../media/{{ post.heroHeader}}" id = "inner"alt = "heroHeader" class = "rounded" style="max-width: 140px; width: auto; height: 50px; float:left">
+            </div>
+            <div style="display: inline-block;">
+                {{post.title}} - {{post.author}} - Posted: {{ post.created_at }}
+                <br/>
+                <span style="display: block; width: 1000px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{post.body}}</span>
+            </div>
+            <div  id= "inner" style=" float: right; margin-top: 8px; margin-right: 5px;">
+                 <!-- Button to visit detailed post page -->
+                <a href="{% url 'detailed_post' post.pk%}" style= "vertical-align: middle"><button class = "btn btn-success">Read Article</button></a>
+            </div>
+            </div>
+            </div>
             {% endif %}
         {% endfor %}
 {% endif %}
+
+
+
+
 
 {% endblock %}
 </body>
