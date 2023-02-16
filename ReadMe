@@ -2,20 +2,20 @@ Chautauqua Blog: Ian Drake
 Hello, and thank you again for approaching me with this opportunity.
 
 This repository contains all necessary files related to the Chautauqua Blog project.
-I have given the Chautauqua Blog the name CHATauqua, however in a serious implementation this would be unacceptable.
+I have given the Chautauqua Blog the name CHATauqua, however, in a serious implementation this would be unacceptable.
 At the moment all required User stories have been designed and implemented.
-Only 3 of the optional User stories have been implemented, however I will update this repository if anymore are met.
+Only 3 of the optional User stories have been implemented, however, I will update this repository if any more are met.
 
-This webpage also has three possible templates, however at the moment only two are accessable.
-These webpages being the Homepage and the Detailed Post page. 
+This webpage also has three possible templates, however, at the moment only two are accessible.
+These web pages are the Homepage and the Detailed Post page. 
 The hidden page is a simple form that would allow a User to create a post. This has been excluded in the final design as It went against the User stories requests.
 
-Two models are used to define the content on these webpages. The Post model and the Comment model.
+Two models are used to define the content on these web pages. The Post model and the Comment model.
 The Post contains all relevant information to the post (i.e. Title, Author Name, Body, Hero Header, Creation Time, View Count and Published Status)
-The Comment points towards it's associated post and contains all information related to the comment (i.e. Name, Comment Body, Creation Time, Downvote Count, and Upvote Count)
+The Comment points toward its associated post and contains all information related to the comment (i.e. Name, Comment Body, Creation Time, Downvote Count, and Upvote Count)
 
-The Homepage and Detailed Post page are Class based Views with associated functions to increment model values and to handle redirection after successfully submitting a forms.
-Their are two function based views with no associated template. These are to allow for the functionality of Upvoting and Downvoting comments.
-Although it would have been easily possible to keep the vote count of the Comment contained in a single variable, I chose to seperate the two so the individual counts would still be visible to the admins.
+The Homepage and Detailed Post page are Class-based Views with associated functions to increment model values and to handle redirection after successfully submitting a form.
+There are two function-based views with no associated template. These are to allow for the functionality of Upvoting and Downvoting comments.
+Although it would have been easily possible to keep the vote count of the Comment contained in a single variable, I chose to separate the two so the individual counts would still be visible to the admins.
 
 All requirements have been included in requirements.txt
