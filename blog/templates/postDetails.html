@@ -75,7 +75,7 @@ Newer Comments appear closer to top
             {{ comment.comment }}
             </div>
 
-            <!-- Math for calculating total amount of likes and dislikes-->
+            <!-- Math for calculating sum of total amount of likes and dislikes-->
             <div style=" float: right;display: inline-flex; ">
              {% with sum=comment.upVote|add:comment.downVote  %}
                 <strong style="margin: 10px;">Likes: {{ sum }}</strong>
