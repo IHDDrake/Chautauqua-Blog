@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-
 <!-- Bring in Bootstrap Functionality -->
 {%  extends 'base.html' %}
-
-
+<!-- Rename Title -->
+{% block title %}Post Details{% endblock %}
 
 <html lang="en">
-
-
 <head>
     <meta charset="UTF-8">
     <title>Post Details</title>
 </head>
 
-
 <body>
 {% block content %}
+    <!-- bring in static and dynamic media -->
     {% load static %}
     <br/>
+    <!-- Hero Header
+    Standardized 500 px height. Will center the image based on its width.
+    If width is larger than the screen's size, image is shrunk to fit.
+    -->
     <div style="text-align: center;"><img src ="../media/{{ post.heroHeader}}" alt = "heroHeader" class = "rounded"
     style="max-width:100%;width: auto; height: 500px"></div>
+    <!-- Article Content and Running Stats -->
     <div class = "form-control rounded border-success p-1 mb-2" style="margin: 25px; max-width: 96%;margin-left: 2%">
 <h1>{{ post.title }}</h1>
 <h2>By: {{ post.author}}</h2>
     <small>Posted: {{ post.created_at }} </small><small style="float:right; margin-right: 5px;">Viewed: {{ post.viewCount }}</small>
 <hr>
 <p>{{ post.body }}</p>
-
     </div>
 
+    <!-- Add comment Form
+    Redirects back to detailed post page after successful comment.
+    -->
     <div class="form-control rounded border-success p-1 mb-2 " style="margin: 25px; max-width: 96%;margin-left: 2%">
         <strong>Add Comment</strong>
     <hr style="margin-top:0px;">
@@ -46,6 +50,7 @@
             </div>
         {% endfor %}
     <div style=" float: bottom; margin-bottom: 5px; margin-left: 93%;">
+        <!-- submit button -->
         <button class= "btn btn-success" onClick="this.form.submit();this.disabled=true; this.value='Sending…';">Comment</button>
     </div>
     </form>
@@ -53,41 +58,41 @@
     </div>
 
 
-
+<!-- Comment Section
+Newer Comments appear closer to top
+-->
     <div class="form-control rounded border-success p-1 mb-2" style="margin: 25px; max-width: 96%;margin-left: 2%">
-
+    <!-- If no comments exist yet, inform the user-->
     {% if not post.comments.all %}
     No Comments yet...
     {% else %}
+        <!-- else print comments in proper format -->
         <strong>Comments:</strong>
         <hr style="margin-top:0em;">
-        {% for comment in post.comments.all %}
+        {% for comment in post.comments.all reversed%}
             <div style="display: inline-block; margin-left: 20px; margin-top:-10px;">
             <strong>{{ comment.name }} - {{ comment.created_at }}</strong></br>
             {{ comment.comment }}
             </div>
 
+            <!-- Math for calculating total amount of likes and dislikes-->
             <div style=" float: right;display: inline-flex; ">
-
-
              {% with sum=comment.upVote|add:comment.downVote  %}
                 <strong style="margin: 10px;">Likes: {{ sum }}</strong>
             {% endwith %}
 
+            <!-- Button for upvoting, submits form that increments specific comments Upvote count-->
             <form action = "{% url 'upvote' post.pk %}" method="POST">
                 {% csrf_token %}
                 <button class = "btn btn-success" style="display:flex; margin: 5px;" type="submit" value="{{ comment.id }}" name="upvoteID">upvote</button>
             </form>
-
+            <!-- Button for downvoting, submits form that decrements specific comments Downvote count-->
             <form action = "{% url 'downvote' post.pk %}" method="POST">
                 {% csrf_token %}
                 <button class = "btn btn-success" style="display:flex; margin: 5px;" type="submit" value="{{ comment.id }}" name="downvoteID">downvote</button>
             </form>
-
-
             </div>
             <hr>
-
         {% endfor %}
     {% endif %}
     </div>
